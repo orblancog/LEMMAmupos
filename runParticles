@@ -76,7 +76,7 @@ do
 #	awk '{ if ($1 != "@" && $1 != "*" && $1 != "$" )print $3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' trackEND > tableaddition
 #    fi
     echo "  changing format to madx track start standards"
-    ./table2madxstart tableaddition    
+    awk -f table2madxstart tableaddition    
     echo "  NOW, track "
     madx < job.track.ptc.madx | grep -i warning
 #    madx < job.track.madx | grep -i warning
@@ -92,7 +92,7 @@ do
 #	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
     fi
     echo "  getting particles from turn "$i 
-    ./gettrack1turn -v giro="$i" trackEND
+    awk -f gettrack1turn -v giro="$i" trackEND
     echo -n "  " 
     echo $i" "$(wc -l trackEND) | tee -a palive.dat
 #    echo $i" "$(./MeanRMS6D trackEND) >> beam_turnSUMM.dat

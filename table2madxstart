@@ -1,4 +1,3 @@
-#!/bin/awk -f
 # This script gets the number of particles lost after 1 turn
 # it should be called as $ ./getlppt trackSTART trackloss
 BEGIN { FS=" ";

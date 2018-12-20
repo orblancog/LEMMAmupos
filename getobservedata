@@ -1,4 +1,3 @@
-#!/bin/awk -f
 # This script gets the data between two segments of tracking
 # file name should be passed as argument
 BEGIN { IGNORECASE=1; print "  getting data from file..."}

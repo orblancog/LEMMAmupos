@@ -80,7 +80,7 @@ ptc_end;
 !end of NO purpose tracking in PTC
 
 ! split tracking results inf plot friendly files
-system, "./getobservedata trackone";
+system, "awk -f getobservedata trackone";
 !system, "mv trackLOW_EMIT_RING\$END trackEND";
 ! plot the phase  space
 !system, 'root -x -l -q "DrawPhaseSpace.C(\"START\")" ';
