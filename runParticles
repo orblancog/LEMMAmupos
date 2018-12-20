@@ -1,0 +1,114 @@
+#!/bin/sh -f
+# This script runs particles 
+
+
+
+echo "HI THERE ! This script runs particles through out"
+echo "  an accelerator with fixed target."
+echo "  authors: oblancog, collamati."
+
+# Number of turns
+: ${ngiri:="100"}
+
+echo "NOW..."
+echo "Checking soft. requirements :"
+echo "  Checking for root ..."
+hash root 2>/dev/null || { echo >&2 "OOOps... I require root but it's not installed.  Aborting."; exit 1; }
+echo "    ... root found"
+echo "  Checking for awk ..."
+hash awk 2>/dev/null || { echo >&2 "OOOps... I require awk but it's not installed.  Aborting."; exit 1; }
+echo "    ... akw found"
+echo "  Checking for madx ..."
+hash madx 2>/dev/null || { echo >&2 "OOOps... I require madx but it's not installed.  Aborting."; exit 1; }
+echo "    ... madx found"
+echo "  Checking for python ..."
+hash python 2>/dev/null || { echo >&2 "OOOps... I require python but it's not installed.  Aborting."; exit 1; }
+echo "    ... python found"
+echo "ALL SOFTWARE requirements are OK..."
+
+echo "Runing initial twiss..."
+#madx < job.twiss.madx | grep -i warning THIS TIME DO NOT GENERATE THE betaSTART.txt file
+rm -f beam0.txt
+madx < mubeam.madx
+ln -s beam_mu0.txt beam0.txt
+cp betaSTART.txtcopy betaSTART.txt
+echo "Generating initial particle distribution"
+#root -l -x -q "GenerateInrays.C(\"START\",400)"
+root -l -x -q "GenerateInrays.C(\"START\",2750)"
+rm madxInrays.madx
+rm -f trackEND
+awk '$2="-1"' trackTABLE > trackEND ## before passing the target
+#echo "Translating target output to tracking settings"
+#./gettargetparticles SimTarget-Be001_fort.68
+#exit
+echo "----------------->>>Running particles through lattice !!!"
+echo "----------------->>>            number of turns is "$ngiri
+rm -f palive.dat
+rm -f trackSUMMloss trackSUMMend trackSTART ## erase previous summ tables
+awk '$2="-1"' trackTABLE > trackSUMMend #start summ table with turn -1 (initial distribution from twiss parameters)
+# get the beam sizes and ofsets
+rm -f beam_turnSUMM.dat
+echo "# turn meanx rmsx meanpx rmspx meany rmsy meanpy rmspy meant rmst meanpt rmspt ex corx ey cory et cort" > beam_turnSUMM.dat
+#echo "-1 "$(./MeanRMS6D trackTABLE) >> beam_turnSUMM.dat
+echo "-1 "$(./MeanRMS6Dcut trackTABLE) >> beam_turnSUMM.dat
+
+i=1 #current turn
+while [ "$i" -le "$ngiri" ];
+do
+    echo "----------------->>>Runing turn "$i" of "$ngiri
+    # passing the target only once before the ring
+#    if [ "$i" -eq "1" ]
+#    then
+	echo "  mixing track "$(($i-1))" and look up table"
+	python PythonTOT.py trackEND targetlookuptable tableaddition \
+	    $(awk 'END{print NR}' trackEND 2>&1)\
+ $(awk 'END{print " "NF}' trackEND 2>&1)\
+ $(awk 'END{print " "NR}' targetlookuptable 2>&1)\
+ $(awk 'END{print " "NF}' targetlookuptable 2>&1)
+#    fi
+    # otherwise do not use the target and recirculate
+#    if [ "$i" -ne "1" ]
+#    then
+#	awk '{ if ($1 != "@" && $1 != "*" && $1 != "$" )print $3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' trackEND > tableaddition
+#    fi
+    echo "  changing format to madx track start standards"
+    ./table2madxstart tableaddition    
+    echo "  NOW, track "
+    madx < job.track.ptc.madx | grep -i warning
+#    madx < job.track.madx | grep -i warning
+    if [ "$i" -eq "1" ]
+	then
+	echo "  NOTE: Saving Phase Space at the track start ..."
+	cp betaSTART.txtcopy betaTURN0.txt #no twiss
+	mv trackSTART trackTURN0
+	sed 's/  */ /g' trackTURN0 >> trackSUMMend
+        echo -n "  " 
+	echo "0 "$(wc -l trackTURN0) | tee -a palive.dat
+#	echo "0 "$(./MeanRMS6D trackTURN0) >> beam_turnSUMM.dat
+	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
+    fi
+    echo "  getting particles from turn "$i 
+    ./gettrack1turn -v giro="$i" trackEND
+    echo -n "  " 
+    echo $i" "$(wc -l trackEND) | tee -a palive.dat
+#    echo $i" "$(./MeanRMS6D trackEND) >> beam_turnSUMM.dat
+    echo $i" "$(./MeanRMS6Dcut trackEND) >> beam_turnSUMM.dat
+#    echo "  getting particle losses from turn "$i 
+#    ./getlos1turn -v giro="$i" trackloss
+#    rm -f trackloss
+    echo "Turn "$i" of "$ngiri" finished." 
+    rm -f tableaddition madxInrays.madx
+    i=$(($i + 1))
+done
+mv betaEND.txt betaSUMMend.txt
+echo "----------------->>>tracking finished"
+echo "----------------->>>after "$(($i-1))" turns"
+echo "Draw Phase Space after tracking ..."
+root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",-1)"
+root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",0)"
+root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\")"
+#if [ ! -e trackSUMMloss ] ; then
+#    touch trackSUMMloss
+#fi
+#./getlosperturn trackTURN0 trackSUMMloss
+echo "FINALLY DONE. Adios"
