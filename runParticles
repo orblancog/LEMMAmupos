@@ -26,6 +26,10 @@ hash python 2>/dev/null || { echo >&2 "OOOps... I require python but it's not in
 echo "    ... python found"
 echo "ALL SOFTWARE requirements are OK..."
 
+# target 
+echo "adding target.."
+rm -f targetlookuptable
+ln -s SimTarget-Be-00mm50_001_fort.72 targetlookuptable
 echo "Runing initial twiss..."
 #madx < job.twiss.madx | grep -i warning THIS TIME DO NOT GENERATE THE betaSTART.txt file
 rm -f beam0.txt
