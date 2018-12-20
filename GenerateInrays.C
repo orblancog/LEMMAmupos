@@ -107,7 +107,7 @@ int GenerateInrays (const char * k, int N) {
   betafl->Append(k);
   betafl->Append(".txt");
   beta0in.open(betafl->Data());
-  if (beta0in == 0) {
+  if (!beta0in) {
     // if we cannot open the file, 
     // print an error message and return immediatly
     cout << "Error: cannot open "<<betafl->Data()<<" !"<<endl;
@@ -139,7 +139,7 @@ int GenerateInrays (const char * k, int N) {
 
   // Reading beam info
   beam0in.open("beam0.txt");
-  if (beam0in == 0) {
+  if (!beam0in) {
     // if we cannot open the file, 
     // print an error message and return immediatly
     printf("Error: cannot open beam0.txt!\n");
