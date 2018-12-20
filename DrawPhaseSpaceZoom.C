@@ -113,7 +113,7 @@ int DrawPhaseSpaceZoom (const char * k, const int giro=-2) {//k is the flag name
   }
   // Reading beam info
   beam0in.open("beam0.txt");
-  if (beam0in == 0) {
+  if (!beam0in) {
     // if we cannot open the file, 
     // print an error message and return immediatly
     printf("Error: cannot open beam0.txt!\n");
@@ -188,9 +188,9 @@ int DrawPhaseSpaceZoom (const char * k, const int giro=-2) {//k is the flag name
 
   TString * trackfl = new TString("track");
   trackfl->Append(k);
-  TH2 * trackxpx = new TH2F("H. Phase Space","H Phase Space",400,-4,4,400,-8.0,8.0);//number,-x,x,number,-y,y
-  TH2 * trackypy = new TH2F("V. Phase Space","V Phase Space",400,-4.00,4.00,400,-8.00,8.00);
-  TH2 * tracksd = new TH2F("L. Phase Space","L. Phase Space",400,-40.0,40.0,400,-800.0,800.0);
+  TH2 * trackxpx = new TH2F("H. Phase Space","H Phase Space",400,-4   ,4   ,400,-8    ,8.0  );//number,-x,x,number,-y,y
+  TH2 * trackypy = new TH2F("V. Phase Space","V Phase Space",400,-4   ,4   ,400,-8    ,8.00 );
+  TH2 * tracksd  = new TH2F("L. Phase Space","L. Phase Space",400,-40.0,40.0,400,-800.0,800.0);
 
   //  betafl->Append(".txt");
   track0in.open(trackfl->Data());

@@ -8,7 +8,7 @@ echo "  an accelerator with fixed target."
 echo "  authors: oblancog, collamati."
 
 # Number of turns
-: ${ngiri:="100"}
+: ${ngiri:="5"}
 
 echo "NOW..."
 echo "Checking soft. requirements :"
@@ -104,7 +104,7 @@ do
     rm -f tableaddition madxInrays.madx
     i=$(($i + 1))
 done
-mv betaEND.txt betaSUMMend.txt
+#mv betaEND.txt betaSUMMend.txt
 echo "----------------->>>tracking finished"
 echo "----------------->>>after "$(($i-1))" turns"
 #echo "Draw Phase Space after tracking ..."
@@ -112,10 +112,13 @@ echo "----------------->>>after "$(($i-1))" turns"
 #root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",0)"
 #root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\")"
 #echo "do fits"
-#root -l -x -q ""
+#root -l -x
+# .l 
 
 #if [ ! -e trackSUMMloss ] ; then
 #    touch trackSUMMloss
 #fi
 #./getlosperturn trackTURN0 trackSUMMloss
+
+
 echo "FINALLY DONE. Adios"

@@ -115,7 +115,7 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
 
   // Reading beam info
   beam0in.open("beam0.txt");
-  if (beam0in == 0) {
+  if (!beam0in) {
     // if we cannot open the file, 
     // print an error message and return immediatly
     printf("Error: cannot open beam0.txt!\n");
@@ -190,8 +190,8 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
     
 
     TH2 * trackxpx = new TH2F("H. Phase Space","H Phase Space",400,-4,4,400,-8,8);//number,-x,x,number,-y,y
-    TH2 * trackypy = new TH2F("V. Phase Space","V Phase Space",400,-4.00,4.00,400,-8,8);
-    TH2 * tracksd = new TH2F("L. Phase Space","L. Phase Space",400,-400.0,400.0,400,-400.0,400.0);
+    TH2 * trackypy = new TH2F("V. Phase Space","V Phase Space",400,-4,4,400,-8,8);
+    TH2 * tracksd = new TH2F("L. Phase Space","L. Phase Space",400,-40,40,400,-800,800);
 
     int    curturn = -2;
     ofstream pok;
@@ -270,18 +270,18 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
 }
 
 
-int fitthetrack ( const char * k){
+int fitthetrack ( const char * k, const int allturns=100){
   ofstream fitresult;
   ofstream pok;
 
   if (1) fitresult.open ("fitresult.txt");
   fitresult << "# turn meanx rmsx meanpx rmspx meany rmsy meanpy rmspy meant rmst meanpt rmspt ex corx ey cory et cort"<<endl; 
   fitresult.close();
-  if (1) pok.open ("fitpok.txt");
+  if (1) pok.open ("pok.txt");
   pok << "# turn n_par" <<endl;
   pok.close();
   
-  for (int i=-1; i<101; i++){
+  for (int i=-1; i<=allturns; i++){
     MeanRMS6Dcut_cernroot(k,i);
   }
   return 0;
