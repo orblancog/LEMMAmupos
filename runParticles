@@ -47,10 +47,10 @@ rm -f palive.dat
 rm -f trackSUMMloss trackSUMMend trackSTART ## erase previous summ tables
 awk '$2="-1"' trackTABLE > trackSUMMend #start summ table with turn -1 (initial distribution from twiss parameters)
 # get the beam sizes and ofsets
-rm -f beam_turnSUMM.dat
-echo "# turn meanx rmsx meanpx rmspx meany rmsy meanpy rmspy meant rmst meanpt rmspt ex corx ey cory et cort" > beam_turnSUMM.dat
+#rm -f beam_turnSUMM.dat
+#echo "# turn meanx rmsx meanpx rmspx meany rmsy meanpy rmspy meant rmst meanpt rmspt ex corx ey cory et cort" > beam_turnSUMM.dat
 #echo "-1 "$(./MeanRMS6D trackTABLE) >> beam_turnSUMM.dat
-echo "-1 "$(./MeanRMS6Dcut trackTABLE) >> beam_turnSUMM.dat
+#echo "-1 "$(./MeanRMS6Dcut trackTABLE) >> beam_turnSUMM.dat
 
 i=1 #current turn
 while [ "$i" -le "$ngiri" ];
@@ -85,14 +85,14 @@ do
         echo -n "  " 
 	echo "0 "$(wc -l trackTURN0) | tee -a palive.dat
 #	echo "0 "$(./MeanRMS6D trackTURN0) >> beam_turnSUMM.dat
-	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
+#	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
     fi
     echo "  getting particles from turn "$i 
     ./gettrack1turn -v giro="$i" trackEND
     echo -n "  " 
     echo $i" "$(wc -l trackEND) | tee -a palive.dat
 #    echo $i" "$(./MeanRMS6D trackEND) >> beam_turnSUMM.dat
-    echo $i" "$(./MeanRMS6Dcut trackEND) >> beam_turnSUMM.dat
+#    echo $i" "$(./MeanRMS6Dcut trackEND) >> beam_turnSUMM.dat
 #    echo "  getting particle losses from turn "$i 
 #    ./getlos1turn -v giro="$i" trackloss
 #    rm -f trackloss
@@ -103,10 +103,13 @@ done
 mv betaEND.txt betaSUMMend.txt
 echo "----------------->>>tracking finished"
 echo "----------------->>>after "$(($i-1))" turns"
-echo "Draw Phase Space after tracking ..."
-root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",-1)"
-root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",0)"
-root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\")"
+#echo "Draw Phase Space after tracking ..."
+#root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",-1)"
+#root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\",0)"
+#root -l -x -q "DrawPhaseSpaceAper.C(\"SUMMend\")"
+#echo "do fits"
+#root -l -x -q ""
+
 #if [ ! -e trackSUMMloss ] ; then
 #    touch trackSUMMloss
 #fi
