@@ -1,0 +1,17 @@
+#!/bin/awk -f
+# This script gets the number of particles lost after 1 turn
+# it should be called as $ ./getlppt trackSTART trackloss
+BEGIN { FS=" ";
+    IGNORECASE=1; 
+#    print "  getting data from files...";
+}
+{
+    if($1!~/^(@*$)/){#header in first file
+	if($2~/^[0-9]+$/){
+	    $2=giro;
+	    print $0 >> ("trackSUMMend");
+	}
+    }
+}
+END { 
+}

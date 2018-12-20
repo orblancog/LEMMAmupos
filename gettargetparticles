@@ -1,0 +1,18 @@
+#!/bin/awk -f
+# This script gets the data between two segments of tracking
+# file name should be passed as argument
+BEGIN { IGNORECASE=1; 
+    print "  getting data from file... ";
+    print "!  File from custom distribution" > "madxInrays.madx";
+    print "!  warning: pt=(E-E0)/E0 valid for large betar" > "madxInrays.madx";
+    Energy = 45;
+    clight = 299792458;}
+{
+    ct = -1*$6*clight;
+    pt = ($5-Energy)/Energy;
+    px = $2/Energy;
+    py = $4/Energy;
+    # print "ptc_start, x="$1",px="px",y="$3",py="py",t="ct",pt="pt";" >> "madxInrays.madx";
+    print "start, x="$1",px="px",y="$3",py="py",t="ct",pt="pt";" >> "madxInrays.madx";
+}
+END { print "  created file 'madxInrays.madx' . Adios"}

@@ -1,0 +1,24 @@
+#!/bin/awk -f
+# This script gets the number of particles alive per turn
+# it should be called as $ ./getlppt trackSTART trackloss
+BEGIN { IGNORECASE=1; print "  getting data from files..."; maxturn=0;}
+{
+    if(FNR==NR && $1!~/^(@*$)/){#header in first file
+	nlines+=1;
+    }else if($1!~/^(\@|\*|\$)/){
+	llost[$2]+=1;
+	if ($2 > maxturn){
+	    maxturn = $2;
+#	    print maxturn;
+}
+    }
+}
+END { print "  number of particles in turn 0: "nlines;
+    lalive["0"] = nlines;
+    print "0 "nlines > "palivetable";
+    for (x=1;x<=maxturn;x++){
+    	lalive[x]=lalive[x-1]-llost[x];
+    	print x" "lalive[x] >> "palivetable";
+    }
+    print "  all done. Adios";
+}

@@ -1,0 +1,3 @@
+! Beam pipe
+Rpipe = 50e-3;![m]
+AngMax = 1.0; !maximum angle 1[rad]=

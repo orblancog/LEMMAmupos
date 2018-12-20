@@ -1,0 +1,19 @@
+! the beam 
+E0     := 22.500;![GeV]
+npar   := 1.9e4;
+emitx  := 68e-9;![m]
+emity  := emitx;![m] 
+blength:= 3.6e-3;![m]
+bcur   := 1e-6;![A]
+nbunch := 1;
+nparpb := 3.1e5;
+espread:= 50e-3;
+beam, PARTICLE=posmuon, ENERGY=E0,! proton mass is large, so it should be as muons
+      ex=emitx, ey=emity, et=blength*espread,
+      sigt=blength, sige=espread, kbunch=nbunch,
+      NPART=nparpb, bcurrent=bcur, RADIATE=false;
+
+
+assign, echo="beam_mu0.txt";
+show, beam;
+assign, echo=terminal;

@@ -1,0 +1,191 @@
+!! oblancog First twiss 20161123 
+option,echo,info,warn;
+
+! the beam 
+!call, file="pbeam.madx";
+call, file="mubeam.madx";
+
+! The ring 
+!call, file="Pos_45GeV_Ring_8.mad.madx";
+!use, sequence=Low_Emit_RING, range=#s/#e;
+!SXT_ON := 1;
+call, file="PANTALEO_SS5mu.seq";
+use, sequence=cellm;
+
+!! The cavity parameters
+!RF_ON       := 1.5;
+!RFc->LAG    := -0.426;
+!RFc->FREQ   := 500.117256;
+!RFc->HARMON := 10510;
+
+! Beam pipe
+call, file="aperture.madx";
+
+! the hinv
+hinv := (1+(table(twiss,alfx))^2)/table(twiss,betx)*table(twiss,dx)^2
+     + 2*table(twiss,alfx)*table(twiss,dx)*table(twiss,dpx)
+     + table(twiss,betx)*table(twiss,dpx)^2;
+grad := beam->brho*table(twiss,k1l)/table(twiss,L);
+natchromx := table(twiss,k1l)*table(twiss,betx);
+natchromy := table(twiss,k1l)*table(twiss,bety);
+
+
+/*! ! some plots for comparison of twiss functions
+system, "rm -f *tws";
+! savebeta,label=betaSTART,place=#s;
+! savebeta,label=betaEND,place=#e;
+! select, flag=twiss, clear;
+! select, flag=twiss, column= name,keyword,s,l,betx,bety,alfx,alfy,mux,muy,dx,dy,x,
+! 	dpx,dpy,ddx,ddy,hinv;
+! TWISS, chrom, SAVE, file="LEMMAp_SXT_ON.tws";
+! !EMIT, deltap=0;
+! !show, beam;
+! !survey,file="survey";
+system, "rm -f madx.ps";
+system, "rm -f madx.pdf";
+! plot, colour=100, haxis=s, vaxis1=betx,bety, vaxis2=dx,hmin=0,hmax=200,title="First ARC Cell";
+! plot, colour=100, haxis=s, vaxis=hinv, hmin=0, hmax=200, title="First ARC Cell";
+! plot, colour=100, haxis=s, vaxis1=betx,bety, vaxis2=dx,dy,title="Low Emit Ring (LER)";
+! plot, colour=100, haxis=s, vaxis1=wx,wy, vaxis2=ddx,title="LER";
+! system, "ps2pdf madx.ps";
+! ! End of initial twiss plots and comparison
+! !stop;
+
+! Changing the lattice start point for tracking purposes
+system, "rm -f *seq";
+save, sequence=Low_Emit_RING,file="LERp.seq";
+call, file="LERp.seq";
+use, sequence=Low_Emit_RING;
+seqedit, sequence=Low_Emit_RING;
+flatten;
+! install, element=lowhinv,class=marker,at=0;!drif of some cm
+! install, element=lowhinv,class=marker,at=90.8;!drif of some cm
+! install, element=lowhinv,class=marker,at=145;!drif of some cm
+install, element=lowhinv,class=marker,at=98.24;!drif of some cm
+flatten;
+!endedit;
+!save, sequence=Low_Emit_RING,file="myLow_Emit_RING.seq";
+!call, file="myLow_Emit_RING.seq";
+!stop;
+!use, sequence=Low_Emit_RING;
+!seqedit, sequence=Low_Emit_RING;
+cycle, start=lowhinv;
+flatten;
+endedit;
+*/
+! !makethin lenses
+! use, sequence=Low_Emit_RING;
+! select,flag=makethin,class=sbend,thick=false,slice=5;!
+! !select,flag=makethin,class=rbend,thick=false,slice=2;!no rbends
+! select,flag=makethin,class=quadrupole,thick=false,slice=2;
+! select,flag=makethin,class=sextupole,thick=false,slice=2;
+! makethin, sequence=Low_Emit_RING,style=teapot,makedipedge;
+! save, sequence=Low_Emit_RING,file="LERp.thin.seq";
+! call, file="LERp.thin.seq";
+use, sequence=Low_Emit_RING;
+! END of Changing the lattice start point for tracking purposes
+!stop;
+
+! Here I get the beam and twiss params for the part. generation
+! use, sequence=Low_Emit_RING;
+savebeta,label=betalowhinv,place=lowhinv;
+savebeta,label=betaENDlowhinv,place=#e;
+select, flag=twiss, clear;
+select, flag=twiss,column=name,keyword,s,l,betx,bety,alfx,alfy,mux,muy,dx,dy,x,
+	dpx,dpy,ddx,ddy,hinv,grad;
+TWISS, chrom, file="test.tfs";
+! plot, colour=100, haxis=s, vaxis1=betx,bety, vaxis2=dx,hmin=0,hmax=200,title="new start point";
+! plot, colour=100, haxis=s, vaxis=hinv, hmin=0, hmax=200, title="new start point";
+! plot, colour=100, haxis=s, vaxis1=betx,bety, vaxis2=dx,dy,title="new start point";
+! plot, colour=100, haxis=s, vaxis1=wx,wy, vaxis2=ddx,title="new start point";
+! system, "ps2pdf madx.ps";
+stop;
+
+/*! ! First track start point
+! system, "rm -f beta*.txt beam0.txt";
+! assign, echo="betaSTART.txt";
+! show, betaSTART;
+! assign, echo="betaEND.txt";
+! show, betaEND;
+! assign, echo="beam0.txt";
+! show, beam;
+! assign, echo=terminal;
+! New starting point
+system, "rm -f beta*.txt beam0.txt";
+assign, echo="betaSTART.txt";
+show, betalowhinv;
+assign, echo="betaEND.txt";
+show, betaENDlowhinv;
+assign, echo="beam0.txt";
+show, beam;
+assign, echo=terminal;
+!stop;
+! ! Generating particles(flagname,Nparticles)
+! system, 'root -l -x -q "GenerateInrays.C(\"START\",1e2)"';
+stop;
+*/
+! NO purpose tracking in MAD-X
+system, "rm -f track*";
+!stop;
+!set parameters
+track, onepass=true,aperture=true,onetable,recloss,dump;
+!call, file="observe.madx";!observe;!set obeservation points
+!set particles
+!start, X=1e-3, PX=0, Y=0, PY=0, T=0, PT=0;
+!start, X=0, PX=1e-3, Y=0, PY=0, T=0, PT=0;
+!start, X=0, PX=0, Y=1e-3, PY=0, T=0, PT=0;
+!start, X=0, PX=0, Y=0, PY=1e-3, T=0, PT=0;
+!start, X=0, PX=0, Y=0, PY=0, T=1e-2, PT=0;
+!start, X=0, PX=0, Y=0, PY=0, T=0, PT=1e-2;
+!start, X=1e-3, PX=5e-4, Y=1e-5, PY=1e-5, T=1e-9, PT=1e-9;
+!start, X=0, PX=0, Y=0, PY=0, T=0, PT=0;
+!start, X=0, PX=0, Y=0, PY=0, T=0, PT=-0.0;
+!start, X=0, PX=0, Y=0, PY=0, T=-67.0e-3, PT=-0.0;
+!start, X=0, PX=0, Y=0, PY=0, T=0, PT=-0.07;
+!start, X=0, PX=0, Y=0, PY=0, T=-75.0e-3, PT=-0.07;
+call,file="madxInrays.madx";
+run,turns=50,maxaper={Rpipe,AngMax,Rpipe,AngMax,1.0,0.1};!run track
+!dynap;
+endtrack;
+write, table=trackloss, file="trackloss";!write lost particles
+! End of NO purpose tracking in MAD-X
+
+! ! beggining track
+! ! NO purpuse tracking in PTC
+! !stop;
+! !set parameters
+! system, "rm -f track*";
+! ptc_create_universe;
+! ptc_create_layout,model=2,method=6,nst=10,
+! !exact;!,
+! resplit,even;
+! !ptc_observe, place="IP.1";
+! !set particles
+! !ptc_start, X=0, PX=0, Y=0, PY=0, T=0, PT=0;
+! !ptc_start, X=1e-3, PX=1e-3, Y=1e-3, PY=1e-3, T=1e-9, PT=1e-9;
+! call, file="madxInrays.madx";
+! !run
+! !ptc_track, icase=6,element_by_element,turns=1,dump,onetable,norm_no=1,file;!,
+! !norm_no is order of the normal form : 1=linear, 2 ...!
+! !ptc_setcavities;
+! !ptc_setswitch,debuglevel=1,maxacceleration=false,totalpath=false,
+! !	radiation=true,fringe=false,time=true,nocavity=false;
+! ptc_track, icase=6,turns=1,dump,onetable,element_by_element,
+! maxaper={Rpipe,AngMax,Rpipe,AngMax,0,0},
+! ! the t and pt vars do not change anything
+! !norm_no=4,
+! file,
+! radiation;
+
+! !ptc_observe,place=#e;
+! !ptc_trackline, turns=1,onetable,file;
+! ptc_track_end;
+! ptc_end;
+! !end of NO purpose tracking in PTC
+
+! split tracking results inf plot friendly files
+system, "./getobservedata trackone";
+system, "mv trackLOW_EMIT_RING\$END trackEND";
+! plot the phase  space
+!system, 'root -x -l -q "DrawPhaseSpace.C(\"START\")" ';
+!system, 'root -x -l -q "DrawPhaseSpace.C(\"END\")" ';

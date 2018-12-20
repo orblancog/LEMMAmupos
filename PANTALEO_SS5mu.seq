@@ -1,0 +1,27 @@
+none = 0;
+mf1: quadrupole,l:= 0.13055185,k1:= 2.6,aperture:={ 0.05},apertype=circle;;;
+md2: quadrupole,l:= 0.32651065,k1:= -2.6,aperture:={ 0.05},apertype=circle;;;
+mf3: quadrupole,l:= 0.40780895,k1:= 2.6,aperture:={ 0.05},apertype=circle;;;
+nf3: quadrupole,l:= 0.40780895,k1:= -2.6,aperture:={ 0.05},apertype=circle;;;
+nd2: quadrupole,l:= 0.32651065,k1:= 2.6,aperture:={ 0.05},apertype=circle;;;
+nf1: quadrupole,l:= 0.13055185,k1:= -2.6,aperture:={ 0.05},apertype=circle;;;
+
+freqca1 = 400;
+lagca1 = 0.5;
+voltca1 = 2.3919*1e-9;
+CA1 : RFCAVITY, FREQ:= FREQCA1, LAG:= LAGCA1, VOLT:= VOLTCA1, apertype=circle, aperture={0.05};
+cellm: sequence, l = 4.4799888;
+ca1, at = 0;
+mf1, at = 0.315275925;
+mf1, at = 0.445827775;
+md2, at = 0.778459625;
+md2, at = 1.104970275;
+mf3, at = 1.576230675;
+mf3, at = 1.984039625;
+nf3, at = 2.495949175;
+nf3, at = 2.903758125;
+nd2, at = 3.375018525;
+nd2, at = 3.701529175;
+nf1, at = 4.034161025;
+nf1, at = 4.164712875;
+endsequence;
