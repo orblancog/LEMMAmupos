@@ -40,7 +40,7 @@ echo "ALL SOFTWARE requirements are OK..."
 #echo "Generating initial particle distribution"
 #root -l -x -q "GenerateInrays.C(\"START\",400)"
 #root -l -x -q "GenerateInrays.C(\"START\",2750)"
-#rm madxInrays.madx
+rm -f madxInrays.madx
 
 # read positrons to produce muons
 echo " reading positron file to produce muons..."
