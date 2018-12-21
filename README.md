@@ -26,6 +26,6 @@ It will produce a file called pok.txt and fitresults.txt
 
 Authors
 =======
-orblancog, collamati
+orblancog, collamati, ciarma
 
 o

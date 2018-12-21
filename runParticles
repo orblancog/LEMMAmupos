@@ -5,7 +5,7 @@
 
 echo "HI THERE ! This script runs particles through out"
 echo "  an accelerator with fixed target."
-echo "  authors: oblancog, collamati."
+echo "  authors: oblancog, collamati, ciarma"
 
 # Number of turns
 : ${ngiri:="5"}
