@@ -27,21 +27,35 @@ echo "    ... python found"
 echo "ALL SOFTWARE requirements are OK..."
 
 # target 
-echo "adding target.."
-rm -f targetlookuptable
-ln -s SimTarget-Be-00mm50_001_fort.72 targetlookuptable
-echo "Runing initial twiss..."
-#madx < job.twiss.madx | grep -i warning THIS TIME DO NOT GENERATE THE betaSTART.txt file
-rm -f beam0.txt
-madx < mubeam.madx
-ln -s beam_mu0.txt beam0.txt
-cp betaSTART.txtcopy betaSTART.txt
-echo "Generating initial particle distribution"
+#echo "adding target.."
+#rm -f targetlookuptable
+#ln -s SimTarget-Be-00mm50_001_fort.72 targetlookuptable
+#echo "Runing initial twiss..."
+##madx < job.twiss.madx | grep -i warning THIS TIME DO NOT GENERATE THE betaSTART.txt file
+#rm -f beam0.txt
+#madx < mubeam.madx
+#ln -s beam_mu0.txt beam0.txt
+#cp betaSTART.txtcopy betaSTART.txt
+
+#echo "Generating initial particle distribution"
 #root -l -x -q "GenerateInrays.C(\"START\",400)"
-root -l -x -q "GenerateInrays.C(\"START\",2750)"
-rm madxInrays.madx
-rm -f trackEND
-awk '$2="-1"' trackTABLE > trackEND ## before passing the target
+#root -l -x -q "GenerateInrays.C(\"START\",2750)"
+#rm madxInrays.madx
+
+# read positrons to produce muons
+echo " reading positron file to produce muons..."
+root -l -x -q "input2root.cxx" #default name trackSUMMend_PANTALEOss5_Be00mm50_pos.dat
+echo "  file positroni.root created and filled in"
+echo "  producing muons from positron root file ..."
+root -l -x -q "beam_int_6D_ntupla.cxx" # default input : positroni.root
+echo "  Files created : muoni.root, and file to be tracked"
+
+#exit
+
+
+
+#rm -f trackEND
+#awk '$2="-1"' trackTABLE > trackEND ## before passing the target
 #echo "Translating target output to tracking settings"
 #./gettargetparticles SimTarget-Be001_fort.68
 #exit
@@ -49,7 +63,7 @@ echo "----------------->>>Running particles through lattice !!!"
 echo "----------------->>>            number of turns is "$ngiri
 rm -f palive.dat
 rm -f trackSUMMloss trackSUMMend trackSTART ## erase previous summ tables
-awk '$2="-1"' trackTABLE > trackSUMMend #start summ table with turn -1 (initial distribution from twiss parameters)
+#awk '$2="-1"' trackTABLE > trackSUMMend #start summ table with turn -1 (initial distribution from twiss parameters)
 # get the beam sizes and ofsets
 #rm -f beam_turnSUMM.dat
 #echo "# turn meanx rmsx meanpx rmspx meany rmsy meanpy rmspy meant rmst meanpt rmspt ex corx ey cory et cort" > beam_turnSUMM.dat
@@ -63,12 +77,13 @@ do
     # passing the target only once before the ring
 #    if [ "$i" -eq "1" ]
 #    then
-	echo "  mixing track "$(($i-1))" and look up table"
-	python PythonTOT.py trackEND targetlookuptable tableaddition \
-	    $(awk 'END{print NR}' trackEND 2>&1)\
- $(awk 'END{print " "NF}' trackEND 2>&1)\
- $(awk 'END{print " "NR}' targetlookuptable 2>&1)\
- $(awk 'END{print " "NF}' targetlookuptable 2>&1)
+#    echo "  mixing track "$(($i-1))" and look up table"
+#    root -l -x -q ""
+#	python2.7 PythonTOT.py trackEND targetlookuptable tableaddition \
+#	    $(awk 'END{print NR}' trackEND 2>&1)\
+# $(awk 'END{print " "NF}' trackEND 2>&1)\
+# $(awk 'END{print " "NR}' targetlookuptable 2>&1)\
+# $(awk 'END{print " "NF}' targetlookuptable 2>&1)
 #    fi
     # otherwise do not use the target and recirculate
 #    if [ "$i" -ne "1" ]
@@ -76,24 +91,32 @@ do
 #	awk '{ if ($1 != "@" && $1 != "*" && $1 != "$" )print $3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8}' trackEND > tableaddition
 #    fi
     echo "  changing format to madx track start standards"
-    awk -f table2madxstart tableaddition    
+    awk -f table2madxstart muoniprova_be_0.5mm_t000_g000.dat
     echo "  NOW, track "
     madx < job.track.ptc.madx | grep -i warning
 #    madx < job.track.madx | grep -i warning
-    if [ "$i" -eq "1" ]
-	then
-	echo "  NOTE: Saving Phase Space at the track start ..."
-	cp betaSTART.txtcopy betaTURN0.txt #no twiss
-	mv trackSTART trackTURN0
-	sed 's/  */ /g' trackTURN0 >> trackSUMMend
-        echo -n "  " 
-	echo "0 "$(wc -l trackTURN0) | tee -a palive.dat
+#    if [ "$i" -eq "1" ]
+#	then
+#	echo "  NOTE: Saving Phase Space at the track start ..."
+#	cp betaSTART.txtcopy betaTURN0.txt #no twiss
+#	mv trackSTART trackTURN0
+#	sed 's/  */ /g' trackTURN0 >> trackSUMMend
+#        echo -n "  " 
+#	echo "0 "$(wc -l trackTURN0) | tee -a palive.dat
 #	echo "0 "$(./MeanRMS6D trackTURN0) >> beam_turnSUMM.dat
 #	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
-    fi
-    echo "  getting particles from turn "$i 
-    awk -f gettrack1turn -v giro="$i" trackEND
-    echo -n "  " 
+#    fi
+    echo "  getting particles from turn "$i
+    
+    #awk -f gettrack1turn -v giro="0" muoniprova_be_0.5mm_t000_g000.dat
+    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_0.5mm_t000_g000.dat\")"
+    root -l -x -q "madx_output.cxx(\"muoniprova_be_0.5mm_t000_g000.root\")"
+
+    echo " performing multiple scattering"
+
+    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_0.5mm_t001_g000.dat\")"
+    root -l -x -q "ms_mu.cxx(\"muoniprova_be_0.5mm_t001_g000.root\")"
+    exit
     echo $i" "$(wc -l trackEND) | tee -a palive.dat
 #    echo $i" "$(./MeanRMS6D trackEND) >> beam_turnSUMM.dat
 #    echo $i" "$(./MeanRMS6Dcut trackEND) >> beam_turnSUMM.dat

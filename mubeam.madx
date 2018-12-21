@@ -14,6 +14,6 @@ beam, PARTICLE=posmuon, ENERGY=E0,! proton mass is large, so it should be as muo
       NPART=nparpb, bcurrent=bcur, RADIATE=false;
 
 
-assign, echo="beam_mu0.txt";
-show, beam;
-assign, echo=terminal;
+!assign, echo="beam_mu0.txt";
+!show, beam;
+!assign, echo=terminal;
