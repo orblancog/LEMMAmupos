@@ -6,8 +6,10 @@ BEGIN { FS=" ";
 }
 {
     if($1!~/^(@*$)/){#header in first file
-	print "ptc_start, x="$1",px="$2",y="$3",py="$4",t="$5",pt="$6";" >> ("madxInrays.madx");
-#	print "start, x="$1",px="$2",y="$3",py="$4",t="$5",pt="$6";" >> ("madxInrays.madx");
+    if ($2 == 0){
+	   print "ptc_start, x="$3",px="$4",y="$5",py="$6",t="$7",pt="$8";" >> ("madxInrays.madx");
+#	   print "start, x="$1",px="$2",y="$3",py="$4",t="$5",pt="$6";" >> ("madxInrays.madx");
+	}
     }
 }
 END { 
