@@ -17,13 +17,13 @@ hash root 2>/dev/null || { echo >&2 "OOOps... I require root but it's not instal
 echo "    ... root found"
 echo "  Checking for awk ..."
 hash awk 2>/dev/null || { echo >&2 "OOOps... I require awk but it's not installed.  Aborting."; exit 1; }
-echo "    ... akw found"
+echo "    ... awk found"
 echo "  Checking for madx ..."
 hash madx 2>/dev/null || { echo >&2 "OOOps... I require madx but it's not installed.  Aborting."; exit 1; }
 echo "    ... madx found"
-echo "  Checking for python ..."
-hash python 2>/dev/null || { echo >&2 "OOOps... I require python but it's not installed.  Aborting."; exit 1; }
-echo "    ... python found"
+#echo "  Checking for python2.7 ..."
+#hash python2.7 2>/dev/null || { echo >&2 "OOOps... I require python but it's not installed.  Aborting."; exit 1; }
+#echo "    ... python found"
 echo "ALL SOFTWARE requirements are OK..."
 
 # target 
