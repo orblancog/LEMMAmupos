@@ -7,6 +7,7 @@ echo "HI THERE ! This script runs particles through out"
 echo "  an accelerator with fixed target."
 echo "  authors: oblancog, collamati, ciarma"
 
+
 # Number of turns
 : ${ngiri:="5"}
 
@@ -43,8 +44,9 @@ echo "ALL SOFTWARE requirements are OK..."
 rm -f madxInrays.madx
 
 # setting up input file
-ln -s trackSUMMend_PANTALEOss5_Be00mm50_pos.dat trackSUMMend_pos.dat
-
+rm -f trackSUMMend_pos.dat
+ln -s trackSUMMend_mpt03_Be03mm00_pos.dat trackSUMMend_pos.dat
+#exit
 
 # read positrons to produce muons
 echo " reading positron file to produce muons..."
@@ -52,6 +54,7 @@ rm -f positroni.root
 root -l -x -q "input2root.cxx" #default name trackSUMMend_pos.dat
 echo "  file positroni.root created and filled in"
 echo "  producing muons from positron root file ..."
+#exit
 rm -f muoni.root
 root -l -x -q "beam_int_6D_ntupla.cxx" # default input : positroni.root
 echo "  Files created : muoni.root, and file to be tracked"

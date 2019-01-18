@@ -12,7 +12,7 @@
 
 void input2root(){
 
-  string nome_file = "trackSUMMend_PANTALEOss5_Be00mm50_pos.dat";
+  string nome_file = "trackSUMMend_pos.dat";
 
   TFile f("positroni.root","recreate");
   TTree pos("pos","info sui positroni");
