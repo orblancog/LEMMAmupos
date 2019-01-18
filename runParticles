@@ -42,15 +42,21 @@ echo "ALL SOFTWARE requirements are OK..."
 #root -l -x -q "GenerateInrays.C(\"START\",2750)"
 rm -f madxInrays.madx
 
+# setting up input file
+ln -s trackSUMMend_PANTALEOss5_Be00mm50_pos.dat trackSUMMend_pos.dat
+
+
 # read positrons to produce muons
 echo " reading positron file to produce muons..."
-root -l -x -q "input2root.cxx" #default name trackSUMMend_PANTALEOss5_Be00mm50_pos.dat
+rm -f positroni.root
+root -l -x -q "input2root.cxx" #default name trackSUMMend_pos.dat
 echo "  file positroni.root created and filled in"
 echo "  producing muons from positron root file ..."
+rm -f muoni.root
 root -l -x -q "beam_int_6D_ntupla.cxx" # default input : positroni.root
 echo "  Files created : muoni.root, and file to be tracked"
 
-#exit
+exit
 
 
 
