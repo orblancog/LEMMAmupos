@@ -44,8 +44,16 @@ echo "ALL SOFTWARE requirements are OK..."
 rm -f madxInrays.madx
 
 # setting up input file
+posfile="trackSUMMend_mpt03_Be03mm00_pos.dat"
+#posfile="trackSUMMend_mpt03_Be03mm00_p"
+if [ ! -f "$posfile" ]; then
+    echo ""
+    echo "  $posfile not found!"
+    exit
+fi
+
 rm -f trackSUMMend_pos.dat
-ln -s trackSUMMend_mpt03_Be03mm00_pos.dat trackSUMMend_pos.dat
+ln -s $posfile trackSUMMend_pos.dat
 #exit
 
 # read positrons to produce muons
