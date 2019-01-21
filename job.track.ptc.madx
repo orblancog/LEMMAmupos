@@ -15,8 +15,10 @@ call, file="mubeam.madx";
 !save, sequence=mpt2, file="junk";
 !call, file="PANTALEO_SS5p.seq";
 !use, sequence=cellp;
-call, file="PANTALEO_SS5mu.seq";
-use, sequence=cellm;
+!call, file="PANTALEO_SS5mu.seq";
+!use, sequence=cellm;
+call, file="mpt03.seq";
+use, sequence=mt;
 !stop;
 
 ! Beam pipe
@@ -27,6 +29,15 @@ call, file="aperture.madx";
 ! RFcLAG      := -0.069;
 ! RFcFREQ     := 492.241590883261;
 ! RFcHARMON   := 10510; 
+freqca1 = 400;
+lagca1 = 0.5;
+voltca1 = 2.3919*1e-9;
+CA1 : RFCAVITY, FREQ:= FREQCA1, LAG:= LAGCA1, VOLT:= VOLTCA1, apertype=circle, aperture={0.05},NO_CAVITY_TOTALPATH;
+seqedit, sequence=mt;
+install, element=ca1, at = 0;
+flatten;
+endedit;
+use, sequence=mt;
 
 ! NO purpose tracking in MAD-X
 system, "rm -f trackEND trackSTART";
