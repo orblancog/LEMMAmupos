@@ -35,7 +35,7 @@ void input2root(){
   std::vector<string> numeri;
   istringstream iss("ciao");
   
-  cout << "lettura di " << nome_file << "in corso." << endl;
+  cout << "  lettura di " << nome_file << " in corso." << endl;
   in.open(nome_file);    
   if (in.is_open()){
 
