@@ -83,7 +83,7 @@ void beam_int_6D_ntupla(){
 
    cout << "    X0   = "<< X0<< " [g cm^-2]"<<endl;
    cout << "    rho  = "<<rho<< " [g cm^-3]"<<endl;
-   cout << "    A    = "<<A<<endl;
+   cout << "    A    = "<<A<< " [g mole-1]"<<endl;
    cout << "    Z    = "<<Z<<endl;
    cout << "    Ltar = "<<l_tgt*1e3<<" [mm]"<<endl;
    
@@ -211,8 +211,9 @@ void beam_int_6D_ntupla(){
      theta_max = 4*m_e/S*sqrt(S/4-pow(m_mu,2));
      th = gRandom->Uniform(-theta_max,theta_max);
      phi = gRandom->Uniform(0,pi);
+     //          cout << n_muXS << " " << xs << " " <<alive[0]<<endl;
      n_mu = n_muXS*xs; // ???
-     w = n_mu/alive[turn];
+     w = n_mu/alive[0];
      deltaEcorr = sqrt(S)/(2*m_e)*sqrt(S/4-pow(m_mu,2));
      dE_E_mu = (E*(1+dE_E)/2-E_mu)/E_mu + gRandom->Uniform(-deltaEcorr,deltaEcorr)/E_mu;
      //dE_E_mu = deltaEcorr/E_mu;
