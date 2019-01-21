@@ -44,7 +44,7 @@ void input2root_mu(string nome_file="ciao"){
   if (in.is_open()){
 
     while(getline(in,line)){
-      cout<<line<<endl;
+      //      cout<<line<<endl;
       numeri.clear();
       iss.clear();
       iss.str(line);
