@@ -41,7 +41,7 @@ void beam_int_6D_ntupla(){
   double Z;
   Double_t X0_tgt; //n lungh rad del bers.
 
-  double berillio[] = {0.0005,65.19,1.848,9.01218,4};
+  double berillio[] = {0.003,65.19,1.848,9.01218,4};
   double idrogeno[] = {0,63.04,0.071,1.008,1};//l_tgt in base al berillio
   double litio[] = {0,82.78,0.534,6.94,3};//l_tgt in base al berillio
   
@@ -106,6 +106,8 @@ void beam_int_6D_ntupla(){
    double n_mu;
    double n_bunch = 3e11;
    double n_muXS = n_bunch*1e-30*rho*n_av/A*Z*l_tgt*100;
+   //   cout << n_muXS<<endl;
+   //   cout << 3*1.848/9.01*6.022*4*0.05*1e4<<endl;
    double prob; //prob di avere evento
    double hit; //var per hit or miss
    double w;
@@ -211,7 +213,7 @@ void beam_int_6D_ntupla(){
      theta_max = 4*m_e/S*sqrt(S/4-pow(m_mu,2));
      th = gRandom->Uniform(-theta_max,theta_max);
      phi = gRandom->Uniform(0,pi);
-     //          cout << n_muXS << " " << xs << " " <<alive[0]<<endl;
+     //               cout << n_muXS << " " << xs << " " <<alive[0]<<endl;
      n_mu = n_muXS*xs; // ???
      w = n_mu/alive[0];
      deltaEcorr = sqrt(S)/(2*m_e)*sqrt(S/4-pow(m_mu,2));
