@@ -78,8 +78,10 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
   char track08[20];
   char track09[20];
   char track10[20];
+  char track11[20];
 
   // Read twiss info
+  /*
   TString * betafl = new TString("betaSTART.txt");
   //betafl->Append(".txt");
   beta0in.open(betafl->Data());
@@ -156,6 +158,7 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
     cout << "    beam0.txt read."<<endl;
     beam0in.close();
   // Calculate sigma0
+  
     sigmax0  = TMath::Sqrt(ex*betax + etax*etax*Energyspread*Energyspread);
     sigmapx0 = TMath::Sqrt(ex/betax);
     sigmay0  = TMath::Sqrt(ey*betay + etay*etay*Energyspread*Energyspread);
@@ -164,6 +167,17 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
     sigmad0  = Energyspread;
     offsetx0 = etax*Energyspread;
     offsety0 = etay*Energyspread;
+
+  */
+  sigmax0 = 150e-6;
+  sigmapx0 = 300e-6;
+  sigmay0 = 150e-6;
+  sigmapy0 = 300e-6;
+  sigmad0 = 0.01;
+  sigmas0 = 3e-3;
+  offsetx0 = 0;
+  offsety0 = 0;
+  
     //  sigmad0  = TMath::Sqrt(et*0);
     cout << "  Beam size to first order "<<endl;
     cout << "    sigmax0  = " << sigmax0 << " m"<< endl;
@@ -172,7 +186,7 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
     cout << "    sigmapy0 = " << sigmapy0 << " rad"<< endl;
     cout << "    sigmas0  = " << sigmas0 << " m"<< endl;
     cout << "    sigmad0  = " << sigmad0 << " dP/P"<< endl;
-  }  
+    //  }  
 
   track0in.open(myflname->Data());
   if (!track0in) {
@@ -198,7 +212,7 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
     int npok = 0;
     pok.open ("pok.txt", fstream::app);
     while(!track0in.eof()){
-      track0in >> track01 >> track02 >> track03 >> track04 >> track05 >> track06 >> track07 >> track08 >> track09 >> track10;
+      track0in >> track01 >> track02 >> track03 >> track04 >> track05 >> track06 >> track07 >> track08 >> track09 >> track10 >> track11;
       if (giro == atof(track02) || giro == -2){
 	curturn = atof(track02);
 	if(abs(atof(track03)) < cutsinsigma*sigmax0 && 
@@ -281,7 +295,7 @@ int fitthetrack ( const char * k){
   pok << "# turn n_par" <<endl;
   pok.close();
   
-  for (int i=-1; i<101; i++){
+  for (int i=-1; i<11; i++){
     MeanRMS6Dcut_cernroot(k,i);
   }
   return 0;
