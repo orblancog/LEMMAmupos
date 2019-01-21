@@ -213,9 +213,10 @@ void beam_int_6D_ntupla(){
      theta_max = 4*m_e/S*sqrt(S/4-pow(m_mu,2));
      th = gRandom->Uniform(-theta_max,theta_max);
      phi = gRandom->Uniform(0,pi);
-     //               cout << n_muXS << " " << xs << " " <<alive[0]<<endl;
-     n_mu = n_muXS*xs; // ???
-     w = n_mu/alive[0];
+     
+     n_mu = n_muXS*xs; // xs, cross section in ubarn
+     w = n_mu/alive[0]; // normalize to the population of the initial bunch
+     //     cout << n_mu << " " << xs << " " <<alive[0] << " " << w<<endl;
      deltaEcorr = sqrt(S)/(2*m_e)*sqrt(S/4-pow(m_mu,2));
      dE_E_mu = (E*(1+dE_E)/2-E_mu)/E_mu + gRandom->Uniform(-deltaEcorr,deltaEcorr)/E_mu;
      //dE_E_mu = deltaEcorr/E_mu;

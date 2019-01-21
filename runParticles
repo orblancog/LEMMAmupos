@@ -63,7 +63,7 @@ root -l -x -q "input2root.cxx" #default name trackSUMMend_pos.dat
 echo "  file positroni.root created and filled in"
 echo "  producing muons from positron root file ..."
 #exit
-rm -f muoni.root
+rm -f muoni.root muoniprova*
 root -l -x -q "beam_int_6D_ntupla.cxx" # default input : positroni.root
 echo "  Files created : muoni.root, and file to be tracked"
 
