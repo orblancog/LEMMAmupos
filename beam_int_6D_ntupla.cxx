@@ -110,8 +110,8 @@ void beam_int_6D_ntupla(){
    //   cout << 3*1.848/9.01*6.022*4*0.05*1e4<<endl;
    double prob; //prob di avere evento
    double hit; //var per hit or miss
-   double w;
-
+   double w;  //number of muons per particle in positron track
+   double wt; //total number of muons
    
    //definizione funzioni
 
@@ -168,7 +168,7 @@ void beam_int_6D_ntupla(){
 
     ////////// LETTURA TTREE //////////////////////////////////////////
     
-   cout<<"Lettura TTree"<<endl;
+      //   cout<<"Lettura TTree"<<endl;
 
    TTree *positroni = (TTree*)Tinput->Get("pos");
    int partID, turn;
@@ -187,7 +187,7 @@ void beam_int_6D_ntupla(){
    ////////// LOOP SULLE ENTRIES /////////////////////////////////////
    
    int nentries = positroni->GetEntries();
-   cout<<"nentries = "<<nentries<<endl;
+   //   cout<<"nentries = "<<nentries<<endl;
 
    int alive[101];
    int ntargh[101];
@@ -200,7 +200,8 @@ void beam_int_6D_ntupla(){
      positroni->GetEntry(i);
      alive[turn]++;
    }
-   
+
+   wt = 0;
    for(int i=0;i<nentries;i++){
      positroni->GetEntry(i);
      
@@ -216,6 +217,7 @@ void beam_int_6D_ntupla(){
      
      n_mu = n_muXS*xs; // xs, cross section in ubarn
      w = n_mu/alive[0]; // normalize to the population of the initial bunch
+     if (turn>=0)     wt = wt + w; // do not add the initial bunch turn=-1
      //     cout << n_mu << " " << xs << " " <<alive[0] << " " << w<<endl;
      deltaEcorr = sqrt(S)/(2*m_e)*sqrt(S/4-pow(m_mu,2));
      dE_E_mu = (E*(1+dE_E)/2-E_mu)/E_mu + gRandom->Uniform(-deltaEcorr,deltaEcorr)/E_mu;
@@ -267,7 +269,7 @@ void beam_int_6D_ntupla(){
      }
      
    }//fine loop sulle entries
-
+   cout << "  :::"<<wt<<" muons were produced !!!" << endl;
    mu.Write();
    out.close();
 
