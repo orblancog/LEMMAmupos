@@ -85,7 +85,7 @@ void madx_output(string nome_file="ciao"){
       if(turn<=turn_in){
 
 	getline(in,line);
-      cout<<line<<endl;
+	//cout<<line<<endl;
       numeri.clear();
       iss.clear();
       iss.str(line);

@@ -187,7 +187,7 @@ int DrawPhaseSpaceZoomMu (const char * k, const int giro=-2) {//k is the flag na
   //  gStyle->SetPalette(56);
 
 
-  TString * trackfl = new TString("track");
+  TString * trackfl = new TString("");
   trackfl->Append(k);
   TH2 * trackxpx = new TH2F("H. Phase Space","H Phase Space",400,-4   ,4   ,400,-8    ,8.0  );//number,-x,x,number,-y,y
   TH2 * trackypy = new TH2F("V. Phase Space","V Phase Space",400,-4   ,4   ,400,-8    ,8.00 );
