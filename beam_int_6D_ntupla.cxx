@@ -47,9 +47,8 @@ void beam_int_6D_ntupla(){
   
   //string proprieta [] = {"l_tgt","X0","rho","A","Z"}; 
   if(tgt=="be"){
-    cout<<endl;
-    cout<<"Bersaglio di Be"<<endl;
-    cout<<endl;
+    //    cout<<endl;
+    cout<<"  Bersaglio di Be"<<endl;
     l_tgt = berillio[0]; //target len in m
     X0 = berillio[1]; //pdg[g cm^-2]
     rho = berillio[2]; //pdg[g cm^-3]???
@@ -82,6 +81,13 @@ void beam_int_6D_ntupla(){
     //normalizzato al n lungh rad berillio
   }
 
+   cout << "    X0   = "<< X0<< " [g cm^-2]"<<endl;
+   cout << "    rho  = "<<rho<< " [g cm^-3]"<<endl;
+   cout << "    A    = "<<A<<endl;
+   cout << "    Z    = "<<Z<<endl;
+
+   
+   
    nome_out = nome_out + "_"+tgt+"_"+l_tgt*1000+"mm_t000_g000.dat";
    out.open(nome_out.c_str());
 
