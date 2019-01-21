@@ -85,7 +85,7 @@ void beam_int_6D_ntupla(){
    cout << "    rho  = "<<rho<< " [g cm^-3]"<<endl;
    cout << "    A    = "<<A<<endl;
    cout << "    Z    = "<<Z<<endl;
-
+   cout << "    Ltar = "<<l_tgt*1e3<<" [mm]"<<endl;
    
    
    nome_out = nome_out + "_"+tgt+"_"+l_tgt*1000+"mm_t000_g000.dat";
