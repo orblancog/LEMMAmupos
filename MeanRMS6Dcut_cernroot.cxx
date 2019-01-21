@@ -115,7 +115,7 @@ int MeanRMS6Dcut_cernroot (const char * fnametrack, const int giro=-2){
 
   // Reading beam info
   beam0in.open("beam0.txt");
-  if (beam0in == 0) {
+  if (!beam0in) {
     // if we cannot open the file, 
     // print an error message and return immediatly
     printf("Error: cannot open beam0.txt!\n");
