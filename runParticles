@@ -88,7 +88,7 @@ rm -f trackSUMMloss trackSUMMend trackSTART ## erase previous summ tables
 #echo "-1 "$(./MeanRMS6Dcut trackTABLE) >> beam_turnSUMM.dat
 
 i=1 #current turn
-
+#exit
 
 while [ "$i" -le "$ngiri" ];
 do
@@ -111,7 +111,7 @@ do
 #    fi
     echo "  changing format to madx track start standards"
     echo "    !!! WARNING : adding dE_E +0.111 because lattice is matched at 20.225GeV"
-    awk -f table2madxstart muoniprova_be_3mm_t000_g000.dat
+    awk -f table2madxstart muoniprova_be_3mm_t001_g000.dat
     echo "  NOW, track "
     madx < job.track.ptc.madx | grep -i warning
 #    madx < job.track.madx | grep -i warning
@@ -127,15 +127,16 @@ do
 #	echo "0 "$(./MeanRMS6Dcut trackTURN0) >> beam_turnSUMM.dat
 #    fi
     echo "  getting particles from turn "$i
-
+#exit
     #awk -f gettrack1turn -v giro="0" muoniprova_be_0.5mm_t000_g000.dat
-    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_3mm_t000_g000.dat\")"
-    root -l -x -q "madx_output.cxx(\"muoniprova_be_3mm_t000_g000.root\")"
+    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_3mm_t001_g000.dat\")"
+    exit
+    root -l -x -q "madx_output.cxx(\"muoniprova_be_3mm_t002_g000.root\")"
     exit
     echo " performing multiple scattering"
 
-    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_0.5mm_t001_g000.dat\")"
-    root -l -x -q "ms_mu.cxx(\"muoniprova_be_0.5mm_t001_g000.root\")"
+    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_0.5mm_t002_g000.dat\")"
+    root -l -x -q "ms_mu.cxx(\"muoniprova_be_0.5mm_t002_g000.root\")"
     exit
     echo $i" "$(wc -l trackEND) | tee -a palive.dat
 #    echo $i" "$(./MeanRMS6D trackEND) >> beam_turnSUMM.dat

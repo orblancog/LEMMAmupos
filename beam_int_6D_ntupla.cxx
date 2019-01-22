@@ -88,7 +88,7 @@ void beam_int_6D_ntupla(){
    cout << "    Ltar = "<<l_tgt*1e3<<" [mm]"<<endl;
    
    
-   nome_out = nome_out + "_"+tgt+"_"+l_tgt*1000+"mm_t000_g000.dat";
+   nome_out = nome_out + "_"+tgt+"_"+l_tgt*1000+"mm_t001_g000.dat";
    out.open(nome_out.c_str());
 
    double z; //zvertex
