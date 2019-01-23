@@ -54,7 +54,7 @@ void madx_output(string nome_file="ciao"){
 
      ////////// LETTURA TTREE //////////////////////////////////////////
     
-   cout<<"Lettura TTree"<<endl;
+    //   cout<<"  Lettura TTree"<<endl;
 
    TTree *input = (TTree*)Tinput->Get("mu");
    int partID, turn;

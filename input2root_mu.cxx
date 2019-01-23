@@ -38,9 +38,9 @@ void input2root_mu(string nome_file="ciao"){
   std::vector<string> numeri;
   istringstream iss("ciao");
   
-  cout << "lettura di " << nome_file << " in corso." << endl;
+  cout << "  lettura di " << nome_file << " in corso." << endl;
   in.open(nome_file);
-  cout<<"fff"<<endl;
+  //  cout<<"fff"<<endl;
   if (in.is_open()){
 
     while(getline(in,line)){
@@ -67,7 +67,7 @@ void input2root_mu(string nome_file="ciao"){
   }//if in.is_open()
   in.close();
   mu.Write();
-
+  cout << "  File .root created"<<endl;
 
 }//FINE
 
