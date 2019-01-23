@@ -2,7 +2,7 @@
 # it should be called as $ ./getlppt trackSTART trackloss
 BEGIN { FS=" ";
     IGNORECASE=1;
-    print "    !!! WARNING : adding dE_E +0.111 because lattice is matched at 20.225GeV"
+    print "    !!! WARNING : adding dE_E +0.111 because lattice is matched at 20.25GeV"
 #    print "  getting data from files...";
 }
 {
