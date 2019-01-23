@@ -31,10 +31,10 @@ void madx_output(string nome_file="ciao"){
     {
         result.push_back(line);
     }
-    cout<<result[1]<<endl;
-    cout<<result[2]<<endl;
-    cout<<result[3]<<endl;
-    cout<<result[4]<<endl;
+    cout<<"  Material: "<<result[1]<<endl;
+    cout<<"  Length  : "<<result[2]<<endl;
+    cout<<"  targetID: "<<result[3]<<endl;
+    cout<<"  turnID  : "<<result[4]<<endl;
 
     string tgt = result[1];//be, h2
     double l_tgt = std::stod(result[2])*0.001; //in m
@@ -45,7 +45,7 @@ void madx_output(string nome_file="ciao"){
 
     ostringstream outbbb;
     outbbb << std::internal << std::setfill('0') << std::setw(3) << (turn_in+1);
-    
+
     nome_dat = nome_dat + outbbb.str() + "_g000.dat";
 
     ofstream out;
@@ -70,19 +70,21 @@ void madx_output(string nome_file="ciao"){
    input->SetBranchAddress("s",&s);
    input->SetBranchAddress("E",&E);//nominale GeV
    input->SetBranchAddress("w",&w);
-  
+
    ifstream in;
   in.open("trackEND");
   string word;
   std::vector<string> numeri;
-  istringstream iss("ciao");  
+  istringstream iss("ciao");
+
   if (in.is_open()){
 
     int nentries = input->GetEntries();
     for(int i=0;i<nentries;i++){
       input->GetEntry(i);
 
-      if(turn<=turn_in){
+      if(turn==turn_in){
+	//	cout << turn << " "<<turn_in <<endl;
 
 	getline(in,line);
 	//cout<<line<<endl;
@@ -105,15 +107,15 @@ void madx_output(string nome_file="ciao"){
       }//fine if
 
       out<<partID<<" "<<turn<<" "<<x<<" "<<px<<" "<<y<<" "<<py<<" "<<ct<<" "<<dE_E<<" "<<s<<" "<<E<<" "<<w<<endl;
-
-	}//fine loop entries
-
+      
+    }//fine loop entries
+            return 0;      
   }//if in.is_open()
   in.close();
 
 
   out.close();
-
+  cout << "  Trackfile written over new .dat file"<<endl;
 
 
 }//FINE
