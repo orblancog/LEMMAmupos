@@ -10,9 +10,9 @@
 //Questo programma legge il .dat dei positoni
 //e lo converte in un .root da far leggere a beam_int_2D_ntupla
 
-void input2root(){
+void input2root(string fname="track_pos.dat"){
 
-  string nome_file = "trackSUMMend_pos.dat";
+  string nome_file = fname;
 
   TFile f("positroni.root","recreate");
   TTree pos("pos","info sui positroni");
