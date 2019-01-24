@@ -10,10 +10,12 @@
 //Questo programma legge il .dat dei positoni
 //e lo converte in un .root da far leggere a beam_int_2D_ntupla
 
-void input2root(string fname="track_pos.dat"){
+int input2root(string fname="track_pos.dat"){
 
   string nome_file = fname;
+  cout << " Reading positron file "<<fname<<" to produce muons..."<<endl;
 
+  
   TFile f("positroni.root","recreate");
   TTree pos("pos","info sui positroni");
   int partID,turn;
@@ -34,9 +36,9 @@ void input2root(string fname="track_pos.dat"){
   string line,word;
   std::vector<string> numeri;
   istringstream iss("ciao");
-  
-  cout << "  lettura di " << nome_file << " in corso." << endl;
-  in.open(nome_file);    
+    
+  in.open(nome_file);
+  if (!in){cout << "ERROR: Can not open file "<<nome_file<<endl;return 1;}
   if (in.is_open()){
 
     while(getline(in,line)){
@@ -62,7 +64,7 @@ void input2root(string fname="track_pos.dat"){
   }//if in.is_open()
   in.close();
   pos.Write();
-
+  return 0;
 
 }//FINE
 
