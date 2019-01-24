@@ -133,7 +133,7 @@ do
     root -l -x -q "madx_output.cxx(\"muoniprova_be_3mm_t001_g000.root\")"
     echo " performing multiple scattering"
 
-    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_0.5mm_t002_g000.dat\")"
+    root -l -x -q "input2root_mu.cxx(\"muoniprova_be_3mm_t002_g000.dat\")"
     exit
     root -l -x -q "ms_mu.cxx(\"muoniprova_be_0.5mm_t002_g000.root\")"
     exit
